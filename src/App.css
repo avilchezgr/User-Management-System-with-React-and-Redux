@@ -33,7 +33,7 @@
 .modal{
 	margin: 50px auto;
     width: 400px;
-	height:500px;
+	min-height:500px;
     background-color: white;
     padding: 25px;
 }

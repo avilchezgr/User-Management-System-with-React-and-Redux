@@ -7,8 +7,8 @@ import Paper from '@material-ui/core/Paper';
 import ListaUsuarios from './ListaUsuarios.js';
 import {connect} from 'react-redux';
 import {postUser, fetchUsers, modifyUser, deleteUser, resetForm} from '../redux/ActionCreators';
-import ModalNewUsuario from './ModalNewUsuario';
-
+import UserDetail from './UserDetail';
+import  {Switch, Route, Redirect, withRouter} from 'react-router-dom';
   const mapStateToProps = state =>{
 		return {
 			users: state.users
@@ -39,9 +39,38 @@ class Main extends Component {
 
   render() {
 	 
+	 
+	 
+	const ListaUsuariosComponent = () => {
+		return(
+			<ListaUsuarios 
+					users = {this.props.users.users}
+					usersLoading = {this.props.users.isLoading}
+					usersFailed =  {this.props.users.errMess}
+					modifyUser={this.props.modifyUser}
+					deleteUser={this.props.deleteUser}
+					resetForm={this.props.resetForm}
+					postUser={this.props.postUser}
+				/>
+		);
+	}
+	const UserDetailComponent = ({match}) => {
+		
+		return(
+			<UserDetail 
+				user={this.props.users.users.filter( (user) => user.id === parseInt(match.params.userId,10))[0]}
+				usersLoading = {this.props.users.isLoading}
+				usersFailed = {this.props.users.errMess}
+				/>
+		);
+	} 	
+
+
+	
 
     return (
       <div >
+	  
         <AppBar position="static" color="default">
           <Toolbar>
             <Typography variant="h6" color="inherit">
@@ -49,6 +78,8 @@ class Main extends Component {
             </Typography>
           </Toolbar>
         </AppBar>
+		
+		
         <div style={{
             width: '60%',
             margin: '0 auto',
@@ -59,31 +90,23 @@ class Main extends Component {
               minHeight: 200,
               padding: 25
             }}>
-            <Typography variant="title" color="inherit" style={{display: 'inline'}}>Listado de usuarios</Typography>
+            
+			<Switch>
+				<Route exact path="/usuarios" component={ListaUsuariosComponent}/> 
+				<Route path="/usuarios/:userId" component={UserDetailComponent} />
+				<Redirect to="/usuarios" />
+			</Switch>
    
-				<div >
-					
-					<ListaUsuarios
-						users = {this.props.users.users}
-						usersLoading = {this.props.users.isLoading}
-						usersFailed =  {this.props.users.errMess}
-						modifyUser={this.props.modifyUser}
-						deleteUser={this.props.deleteUser}
-					/>
-					
-					<ModalNewUsuario 
-					usersFailed={this.props.users.errMess}
-					resetForm={this.props.resetForm}
-					postUser={this.props.postUser}/>
-				</div>
+   
 			
 			</div>
           </Paper>
         </div>
+		
       </div>
     );
   }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

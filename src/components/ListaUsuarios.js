@@ -8,47 +8,31 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Loading from './LoadingComponent';
 import ModalModifyUser from './ModalModifyUser';
 import Typography from '@material-ui/core/Typography';
-
+import UsersError from './UsersError';
+import ModalNewUsuario from './ModalNewUsuario';
+import {Link} from 'react-router-dom';
  const ListaUsuarios = (props) =>{
-
+		
+		let content;
 		
 		if(props.usersLoading){ //if the users list is loading
-			return (
+			content = (
 				<div>
 					<Loading />
 				</div>
 			);
 		}else if(props.usersFailed){ // if the user list has failed
-			return(
-		<div style={{
-				margin:'20px',
-				display: 'flex',
-				flexDirection: 'column',
-				justifyContent: 'center',
-				alignItems: 'center'
-		}}>
-			<Typography style={{
-					color:"grey",
-					fontWeight:'500'
-				}} component="h2" variant="h2" gutterBottom>
-			Oops!
-			</Typography>
-			<Typography style={{
-					color:"grey",
-					fontWeight: '500'
-				}} component="h3" variant="h5" >
-			Something went wrong :-(
-			</Typography>
-		</div>
+			content = (
+					<UsersError/>
 				);
 			
 		}else if(props.users != null){ //if the user list has loaded and is not null
 		
-			return (
+			content = (
 			  <div className="listaUsuarios">
 				<List>
 				  {props.users.map(user => (
-					<ListItem key={user.id} role={undefined} dense button>
+					<ListItem key={user.id} role={undefined} dense button component={Link} to={`/usuarios/${user.id}`}>
 					  
 					  <ListItemText primary={`${user.name}  ${user.lastName}`} />
 					  <ListItemSecondaryAction>
@@ -62,10 +46,33 @@ import Typography from '@material-ui/core/Typography';
 					</ListItem>
 				  ))}
 				</List>
-				
+				<ModalNewUsuario 
+					usersFailed={props.users.usersFailed}
+					resetForm={props.resetForm}
+					postUser={props.postUser}/>
 			  </div>
 			);
 		}
+		
+		
+		
+		
+		
+		return (
+			<div>
+			
+				<Typography style={{
+										color:"grey",
+										fontWeight:'500'
+									}} component="h3" variant="h4" gutterBottom>
+							User List
+							</Typography>
+					
+				{content}
+			
+			</div>
+		);
+		
 		
 }
 

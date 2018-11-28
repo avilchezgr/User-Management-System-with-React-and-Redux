@@ -1,0 +1,17 @@
+.flexRow{
+	
+	display: flex; 
+	flex-direction: row;
+	align-items: center;
+	
+}
+.userDetail{
+	min-width:400px;
+}
+.userDetail span{
+	font-size: 16px;
+}
+
+.userDetailField{
+	color:#808080
+}
