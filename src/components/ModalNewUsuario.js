@@ -20,9 +20,10 @@ class ModalNewUsuario extends Component{
 	}
 	handleSubmit = (values) => {
 		
-		this.props.postUser(values.name, values.lastName, values.age, values.email);
+		this.props.postUser(values.name, values.lastName, values.age, values.email);	
 		this.props.resetForm('NewUserForm');
 		this.closeModal();
+		
 		
 	}
 	render(){

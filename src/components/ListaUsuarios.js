@@ -11,6 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import UsersError from './UsersError';
 import ModalNewUsuario from './ModalNewUsuario';
 import {Link} from 'react-router-dom';
+import LinearProgress from '@material-ui/core/LinearProgress';
+
  const ListaUsuarios = (props) =>{
 		
 		let content;
@@ -27,9 +29,11 @@ import {Link} from 'react-router-dom';
 				);
 			
 		}else if(props.users != null){ //if the user list has loaded and is not null
-		
+			//let progress = props.submittingForm ? (<LinearProgress />) : '';
+			let progress = props.formSubmitting && (<LinearProgress/>);
 			content = (
 			  <div className="listaUsuarios">
+			  {progress}
 				<List>
 				  {props.users.map(user => (
 					<ListItem key={user.id} role={undefined} dense button component={Link} to={`/usuarios/${user.id}`}>

@@ -9,6 +9,9 @@ import {connect} from 'react-redux';
 import {postUser, fetchUsers, modifyUser, deleteUser, resetForm} from '../redux/ActionCreators';
 import UserDetail from './UserDetail';
 import  {Switch, Route, Redirect, withRouter} from 'react-router-dom';
+import ErrorSnackbar from './Snackbars';
+
+
   const mapStateToProps = state =>{
 		return {
 			users: state.users
@@ -44,6 +47,7 @@ class Main extends Component {
 	const ListaUsuariosComponent = () => {
 		return(
 			<ListaUsuarios 
+					formSubmitting = {this.props.users.formSubmitting}
 					users = {this.props.users.users}
 					usersLoading = {this.props.users.isLoading}
 					usersFailed =  {this.props.users.errMess}
@@ -64,8 +68,8 @@ class Main extends Component {
 				/>
 		);
 	} 	
-
-
+	
+	let error = this.props.users.errorSubmitting && (<ErrorSnackbar message={this.props.users.errorSubmitting}/>);
 	
 
     return (
@@ -90,7 +94,7 @@ class Main extends Component {
               minHeight: 200,
               padding: 25
             }}>
-            
+		
 			<Switch>
 				<Route exact path="/usuarios" component={ListaUsuariosComponent}/> 
 				<Route path="/usuarios/:userId" component={UserDetailComponent} />
@@ -102,7 +106,7 @@ class Main extends Component {
 			</div>
           </Paper>
         </div>
-		
+			{error}
       </div>
     );
   }

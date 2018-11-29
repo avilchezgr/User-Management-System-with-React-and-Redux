@@ -6,44 +6,48 @@ import validate from '../components/validate';
 
 
 let NewUserForm = (props) =>{
-	
+		
 		return (
-			<form onSubmit={(values) => props.handleSubmit(values)}>
-				<div>
-					<Field
-					  name="name"					
-					  component={renderTextField}
-					  label="First Name"
-					/>
-				</div>
-				<div>
-					<Field
-					  name="lastName"				
-					  component={renderTextField}
-					  label="Last Name"
-					/>
-				</div>
-				<div>
-					<Field
-					  name="age"
+
+				<form onSubmit={(values) => props.handleSubmit(values)}>
+				
+					<div>
+						<Field
+						  name="name"					
+						  component={renderTextField}
+						  label="First Name"
+						/>
+					</div>
+					<div>
+						<Field
+						  name="lastName"				
+						  component={renderTextField}
+						  label="Last Name"
+						/>
+					</div>
+					<div>
+						<Field
+						  name="age"
+						
+						  component={renderTextField}
+						  label="Age"
+						/>
+					</div>
+					<div>
+						<Field
+						  name="email"
+						
+						  component={renderTextField}
+						  label="Email"
+						/>
+					</div>	
+					<div style={{marginTop:'15px', marginBottom: '20px'}}>
+						<Button type="submit" disabled={props.submitting || props.pristine}>Submit</Button>
+							
+					</div>
 					
-					  component={renderTextField}
-					  label="Age"
-					/>
-				</div>
-				<div>
-					<Field
-					  name="email"
-					
-					  component={renderTextField}
-					  label="Email"
-					/>
-				</div>	
-				<div style={{marginTop:'15px'}}>
-					<Button type="submit" >Submit</Button>
-				</div>
-			</form>
-	
+				</form>
+				
 	);
 	
 	

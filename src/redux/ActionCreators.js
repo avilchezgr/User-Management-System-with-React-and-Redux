@@ -4,12 +4,16 @@ import {reset} from 'redux-form';
 
 export const postUser = (firstName, lastName, age, email) => (dispatch) => {
 	
+	dispatch(submittingForm());
 	const newUser = {
 		name: firstName,
 		lastName: lastName,
 		age: age,
 		email: email
 	}
+	
+	
+	
 	return fetch(baseUrl + 'users', {
 		method:'POST',
 		body: JSON.stringify(newUser),
@@ -35,12 +39,14 @@ export const postUser = (firstName, lastName, age, email) => (dispatch) => {
 	.then( user => dispatch(addUser(user)))
 	.catch(error => {
 		console.log('Post User',error.message);
-		alert('Your user might not be posted');
+		dispatch(errorWhileSubmitting("Error While Posting a new User"));
 	});
 	
 };
 
 export const modifyUser = (id, firstName, lastName, age, email) => (dispatch) => {
+	
+	dispatch(submittingForm());
 	
 	const existingUser = {
 		id: id,
@@ -72,10 +78,10 @@ export const modifyUser = (id, firstName, lastName, age, email) => (dispatch) =>
 		throw errmess
 	})
 	.then(response => response.json())
-	.then( dispatch(modUser(existingUser)))
+	.then(response =>{ dispatch(modUser(existingUser))})
 	.catch(error => {
-		console.log('Post User',error.message);
-		alert('Your user might not be modified');
+		dispatch(errorWhileSubmitting("Error While Modifying User"));
+		console.log('Modify User',error.message);
 	});
 	
 };
@@ -87,23 +93,27 @@ export const delUser = (id) =>({
 
 export const deleteUser = (id) => (dispatch) => {
 	
+	dispatch(submittingForm());
 	return fetch(baseUrl + 'users/'+id, {method:'DELETE'})
 		.then(response => {
 			if(response.ok) {
-			return response;
+				return response;
 			}else{
 				var error = new Error("Error " + response.status+ ": " + response.statusText);
 				error.response = response;
+				console.log("hay un 404");
 				throw error;
 			}
 		}, error => {
 			var errmess = new Error(error.message);
 			throw errmess
 		})
-		.then(dispatch(delUser(id)))
+		.then(response =>{
+			dispatch(delUser(id));
+		}) 
 		.catch(error => {
-			console.log('Post User',error.message);
-			alert('Your user might not be deleted');
+			dispatch(errorWhileSubmitting("Error While Deleting an User"));
+			console.log('Delete User',error.message);
 	});
 		
 };
@@ -151,10 +161,16 @@ export const usersLoading = () => ({
 	type: ActionTypes.USERS_LOADING
 });
 export const addUser = (user) => ({
-	type:ActionTypes.ADD_USER,
-	payload:user
+	type: ActionTypes.ADD_USER,
+	payload: user
 })
 export const resetForm = (formName) => (dispatch) => {
 	dispatch(reset(formName));
 }
-
+export const submittingForm = () => ({
+	type: ActionTypes.WAITING_SUBMIT_USER
+});
+export const errorWhileSubmitting = (errorMess) => ({
+	type: ActionTypes.ERROR_WHILE_SUBMITTING,
+	payload: errorMess
+});
