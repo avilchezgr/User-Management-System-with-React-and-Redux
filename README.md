@@ -1,6 +1,35 @@
 
+## User Management App with React, Redux, MaterialUI
+
 React Web App for user management, you can add new users, edit them or delete them, it connects to an API and sends and receive the users in JSON. 
 
+- It uses Redux for handling the state of the app
+
+- MaterialUI for the appearance of the components
+
+- React Router to switch between views
+
+## Examples:
+
+- Adding a new user and then deleting it
+
+![](addingAndDeletingUser.gif)
+
+- Validating form
+
+![](validators.gif)
+
+- Loading and editing an user
+
+![](loadingAndEditingUser.gif)
+
+- Getting and error while trying to delete user
+
+![](errorDeleting.gif)
+
+- Network error while trying to load the list of users
+
+![](errorLoadingList.gif)
 
 
 
